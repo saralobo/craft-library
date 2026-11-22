@@ -1,0 +1,24 @@
+Add the Panorama from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { PanoramaReel } from 'craft-library';
+
+<PanoramaReel height="100vh" />
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<panorama-reel style="height:100vh"></panorama-reel>
+<!-- document.querySelector("panorama-reel").replay() plays the opening again -->
+
+Props:
+- height: the box it fills, px or any CSS length (default 640); it is 100% wide. In HTML, size the tag with CSS
+- title, text, textItalic: the title and the line under it (in HTML: heading, text, text-italic). Defaults "Lorem ipsum", "Dolor sit amet,", "consectetur adipiscing."
+- video: { src, poster, title, year }, the opening clip; stills: [{ src, title, year }], up to 16 pictures (in HTML, JSON in the video and stills attributes). Leave both out to show the library's own clip and stills (they load from the CDN, nothing to set up); yours must be on your site or allow CORS
+- intro: false starts it settled; labels, cursor, fonts: false turn off the CAM labels, its own cursor, the Google Fonts
+- replay: change it (a counter) to play the opening again
+
+A WebGL hero for moving pictures (no dependencies): a clip opens full-bleed under letterbox bars while the title tracks in, then shrinks into one screen of a panorama of monitors around you. The pointer turns your head; the screens are black and white and colour lives only in a soft circle around the pointer, with focus brackets naming the screen under it. Use it as it is, without restyling or rebuilding it; it paints its own dark ground.
+Docs: https://www.npmjs.com/package/craft-library

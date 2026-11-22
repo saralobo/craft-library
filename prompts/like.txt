@@ -1,0 +1,22 @@
+Add the Bursting heart from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { LikeButton } from 'craft-library';
+
+<LikeButton onChange={(liked) => saveLike(liked)} />   // saveLike: your own handler
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<like-button></like-button>
+<!-- each tap fires a "change" event: e.detail.liked -->
+
+Props:
+- defaultLiked (in HTML, the liked attribute): starts liked, with no animation
+- onChange(liked): after every tap
+- label: the accessible name (default "Like")
+
+A 40px round like button, black at 60%, made to sit over photos and mid-tone backgrounds. Liking: the heart vanishes, a pink disc grows into a lilac ring, 14 dots and 2 or 3 small hearts burst out, and the heart springs back filled. Unliking only takes the colour away. Use it as it is, without restyling it or rebuilding the animation.
+Docs: https://www.npmjs.com/package/craft-library

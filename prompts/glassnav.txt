@@ -1,0 +1,23 @@
+Add the Liquid glass nav bar from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { GlassNav } from 'craft-library';
+
+const [tab, setTab] = useState(0);
+<GlassNav active={tab} onSelect={setTab} />
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<glass-nav active="0"></glass-nav>
+<!-- each choice fires a "select" event: e.detail.index -->
+
+Props:
+- active: the chosen item, 0–4 (Home, Search, Ask AI, Messages, Settings)
+- onSelect(index): every choice, by tap, drag or arrow keys
+- labels: the five accessible names, in order (in HTML, comma-separated); label: the bar's own name
+
+A 291×60 liquid glass bar for a dark app, the Figma glass layer by layer: the white capsule stretches as it travels to the chosen item, the neighbours step aside and each icon has its own gesture. Use it as it is, without restyling or rebuilding it. Put it on a solid background, and keep transform, opacity, filter and isolation off the bar and its wrapper, or the glass stops blending with what is behind it.
+Docs: https://www.npmjs.com/package/craft-library

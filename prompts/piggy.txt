@@ -1,0 +1,24 @@
+Add the Glass piggy bank from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { PiggyBank } from 'craft-library';
+
+<PiggyBank height={560} onDone={() => console.log('done')} />
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<piggy-bank style="height:560px"></piggy-bank>
+<!-- each play ends with a "piggydone" event on the tag; document.querySelector("piggy-bank").play() plays it again -->
+
+Props:
+- height: the box it fills, px or any CSS length (default 560); the box is 100% wide, at least 280px. In HTML, size the tag with CSS
+- onDone(): after each play, once its eyes open again
+- replay: change it (a counter) to play it again
+- autoplay: false waits for replay / play() instead of playing when it comes into view (in HTML, autoplay="false")
+- interactive: false turns off tap-to-replay (in HTML, interactive="false")
+
+A 3D congratulations moment for a phone screen (WebGL; the package brings three.js): a frosted glass piggy bank hops in from the right with a full turn, lands on its hind feet, nearly tips over and clacks back down, rocking like rigid glass. Coins pop into the air above it and drop in through the slot; each one knocks the glass, and its eyes close a little more until they curve, happy. Use it as it is, without restyling or rebuilding it, on a dark background (black is best).
+Docs: https://www.npmjs.com/package/craft-library

@@ -1,0 +1,23 @@
+Add the Iridescent card from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { IridescentCard } from 'craft-library';
+
+<IridescentCard height={480} onTurn={(face) => console.log(face)} />
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<iridescent-card style="height:480px"></iridescent-card>
+<!-- each turn fires a "cardturn" event on the tag: e.detail.face ("front" or "back") -->
+
+Props:
+- height: the box the card fills, px or any CSS length (default 480); the box is 100% wide (at least 300px) and the card sits centred in it. In HTML, size the tag with CSS
+- onTurn(face): after every turn, "front" or "back"
+- name, number, expiry, cvv: what the back shows (in HTML, attributes of the same names; number as "4532 8890 1274 3306")
+- entrance: false skips the half turn on mount (in HTML, entrance="false")
+
+A 3D metal credit card (WebGL; the package brings three.js and loads it with the card): a brushed iridescent plate, a fine struck frame, a chip and the Visa mark. It arrives showing its back and makes a slow half turn to its face; a tap or a drag turns it over, heavy and without bounce. Use it as it is, without restyling or rebuilding it, on a dark background (black is best).
+Docs: https://www.npmjs.com/package/craft-library

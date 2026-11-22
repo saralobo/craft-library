@@ -1,0 +1,25 @@
+Add the Token wheel from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { TokenWheel } from 'craft-library';
+
+<TokenWheel height={900} onContinue={() => goToNextStep()} />   // goToNextStep: your own handler
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<token-wheel style="height:900px"></token-wheel>
+<!-- the white "Continue" pill fires a "tokenscontinue" event on the tag (listen for it to go to your next step); document.querySelector("token-wheel").turn(true) lays the phone on its side, .turn(false) stands it up -->
+
+Props:
+- height: the box it fills, px or any CSS length (default 900); it is 100% wide. In HTML, size the tag with CSS
+- labels: { eyebrow, title, cta, initials }, the screen's words (defaults "Account · BRL", "One account for everything", "Continue", "SL"; in HTML the attributes label-eyebrow, label-title, label-cta, initials)
+- turned: true lays the phone on its side, false stands it up
+- frame: false fills the box with the screen itself, for a real phone (height 100svh); the phone's own tilt then moves the tokens (in HTML, frame="false")
+- controls: false hides the two round buttons beside the phone, turn and replay (in HTML, controls="false")
+- replay: change it (a counter) to play the opening again (in HTML, .replay())
+
+An onboarding screen for an account in 3D (WebGL; the package brings three.js): eight silver tokens (Pix, card, Bitcoin, insurance, investments, exchange, cashback, boleto) turn slowly on a wheel, and the one at the top comes forward and makes a full turn. Turn the phone on its side and they fall, roll and pile up against the edge with real physics; stand it up and they float back into the wheel. Use it as it is, without restyling or rebuilding it, on a dark background (black is best).
+Docs: https://www.npmjs.com/package/craft-library

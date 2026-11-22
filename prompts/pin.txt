@@ -1,0 +1,24 @@
+Add the Map pin from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { MapPin } from 'craft-library';
+
+<MapPin height={560} onConfirm={(a) => saveAddress(a)} />   // saveAddress: your own handler
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<map-pin style="height:560px"></map-pin>
+<!-- "pinchange" fires when the pin lands on an address, "pinconfirm" on Confirm; both carry e.detail { address, neighbourhood, place } -->
+
+Props:
+- height: the box it fills, px or any CSS length (default 560); it is 100% wide. In HTML, size the tag with CSS
+- onChange(address), onConfirm(address): address is { address, neighbourhood, place }
+- labels: { title, confirm, confirmed }, the card's words (defaults "Delivery address", "Confirm", "Confirmed"; in HTML the attributes label-title, label-confirm, label-confirmed)
+- replay: change it (a counter) to fly the pin off and back in (in HTML, document.querySelector("map-pin").replay())
+- autoplay: false keeps the pin out until replay (in HTML, autoplay="false")
+
+A 3D address picker (WebGL; the package brings three.js): a hollow frosted-glass map pin over a dark city map in perspective. A click or a tap on a street sends the pin flying on springs to the nearest curb, where it drops and sticks its tip in; the map is sharp there and soft further away, the streets carry their names, and a card along the bottom shows the address to confirm. The city and its names are invented, to show the gesture. Use it as it is, without restyling or rebuilding it; it paints its own dark ground.
+Docs: https://www.npmjs.com/package/craft-library

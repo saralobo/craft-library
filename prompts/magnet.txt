@@ -1,0 +1,22 @@
+Add the Magnetic icon from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { MagneticIcon } from 'craft-library';
+
+<MagneticIcon onClick={openSearch} />
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<magnetic-icon size="40" label="Search"></magnetic-icon>
+<!-- a real button inside: listen with addEventListener("click", …) on the tag -->
+
+Props:
+- size: px or any CSS length (default 40); the whole effect scales with it
+- label: the accessible name (default "Search")
+- onClick
+
+A round search button with a brushed-metal rim, for dark backgrounds. Near the cursor the rim acts like metal near a strong magnet: the disc is drawn toward the pointer, the rim creases and trembles and, where it is pulled, comes apart in small voxels of metal; its tip cracks into shards and the voxels fly off to the pointer; let go and it springs back with a wobble, closing up again. Use it as it is, without restyling it or rebuilding the effect.
+Docs: https://www.npmjs.com/package/craft-library

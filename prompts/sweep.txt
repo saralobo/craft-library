@@ -1,0 +1,21 @@
+Add the Sweep from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { SweepSphere } from 'craft-library';
+
+{isThinking && <SweepSphere />}   // isThinking: your own state, true while you wait for the answer
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<sweep-sphere></sweep-sphere>
+<!-- show it while you wait and remove it when the answer arrives -->
+
+Props (in HTML, attributes of the same names):
+- label: the word beside the ball (default "Thinking"; "" shows the ball alone, still announced as "Thinking")
+- size: the ball, px or any CSS length (default 32). Under 64px it draws finer, denser dots made to sit beside text; larger, it shows the full detail
+
+A "thinking" indicator for AI replies: a dotted globe. A wave crosses it from left to right, lifting the dots it passes, runs on through the word beside it at the same speed, and rests before the next one. Use it as it is, without restyling or rebuilding it, on a dark background (on a light one, set --thinking-ink and --thinking-dim on it).
+Docs: https://www.npmjs.com/package/craft-library
