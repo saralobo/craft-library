@@ -1,0 +1,50 @@
+/* Magnetic icon · Sara Lobo Library
+   A dark disc with a brushed-metal rim and a search glyph (Figma: 40×40). Near the cursor the rim acts like metal
+   near a strong magnet: the disc is drawn toward the pointer, the strained rim creases and trembles, its tip cracks
+   into shards, and small voxels break off and fly to the pointer. Pairs with magnet.js.
+   Everything is drawn in a 40-unit box, so --mag-size scales the whole piece, the pull included. */
+
+.mag {
+  all: unset;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--mag-size, 40px);
+  height: var(--mag-size, 40px);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .2s cubic-bezier(.2, .8, .2, 1);
+}
+.mag:active {
+  transform: scale(.94);
+}
+.mag:focus-visible {
+  outline: 2px solid #9DB8FF;
+  outline-offset: 4px;
+}
+/* the disc and its rim, redrawn by magnet.js; the stretch reaches past the button */
+.mag-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+/* the shards and voxels: 46 units of room on every side of the 40-unit button (46 / 40 = 115%) */
+.mag-dust {
+  position: absolute;
+  left: -115%;
+  top: -115%;
+  width: 330%;
+  height: 330%;
+  pointer-events: none;
+}
+.mag-icon {
+  position: relative;
+  display: block;
+  width: 50%;
+  height: 50%;
+}

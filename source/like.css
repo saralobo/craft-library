@@ -1,0 +1,345 @@
+/* Bursting heart · Sara Lobo Library
+   The heart eases out of sight, a disc grows and hollows into a ring, 14 dots and 2 or 3 small hearts fly out,
+   and the heart springs back full. Every motion runs on its own property with its own curve; where two curves
+   meet, both are at rest there, so nothing hitches. Unliking only takes the colour away. Pairs with like.js. */
+
+:root {
+  --like-heart: #FF6767;                        /* the liked heart, filled (Figma: General / Heart) */
+  --like-color: #F91880;                        /* the disc */
+  --like-ring: #CC8EF5;                         /* the ring as it opens */
+  --like-spring: cubic-bezier(.34, 1.4, .64, 1); /* fallback for browsers without linear() */
+}
+
+/* a damped spring (damping .55, 700 ms): about 12% over, a short settle, at rest at the end */
+@supports (animation-timing-function: linear(0, 1)) {
+  :root {
+    --like-spring: linear(0, 0.034, 0.12, 0.24, 0.378, 0.52, 0.655, 0.778, 0.883, 0.968, 1.033, 1.079, 1.108, 1.123, 1.126, 1.12, 1.108, 1.092, 1.075, 1.057, 1.04, 1.025, 1.012, 1.002, 0.994, 0.989, 0.986, 0.984, 0.984, 0.985, 0.987, 0.989, 0.991, 0.993, 0.995, 0.997, 0.999, 1, 1.001, 1.001, 1);
+  }
+}
+
+/* lets the ring's hole open smoothly (without it, the ring leaves at once) */
+@property --like-hole {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+/* the button: a 40px circle in black at 60%, made to sit over images */
+.like {
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .6);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .2s ease, transform .22s cubic-bezier(.2, .8, .2, 1);
+}
+.like:hover {
+  background: rgba(0, 0, 0, .72);
+}
+.like:active {
+  transform: scale(.94);
+}
+.like:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.like-icon {
+  position: absolute;
+  left: 8px;
+  top: 9px;
+  width: 24px;
+  height: 24px;
+}
+.like-icon svg {
+  display: block;
+  overflow: visible;
+}
+.like-line {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke .24s cubic-bezier(.4, 0, .2, 1);
+}
+.like-fill {
+  fill: var(--like-heart);
+  opacity: 0;
+  transition: opacity .24s cubic-bezier(.4, 0, .2, 1);
+}
+.like[aria-pressed="true"] .like-line {
+  stroke: var(--like-heart);
+}
+.like[aria-pressed="true"] .like-fill {
+  opacity: 1;
+}
+/* the colour swaps while the heart is out of sight */
+.like.is-liking .like-line,
+.like.is-liking .like-fill {
+  transition-duration: 0s;
+  transition-delay: .3s;
+}
+/* everything that flies out starts from the heart's centre */
+.like-fx {
+  position: absolute;
+  left: 20px;
+  top: 21px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* the heart: out of sight in 120 ms, waits inside the disc, then the spring brings it back full */
+.like.is-liking .like-icon {
+  animation: like-vanish .12s cubic-bezier(.5, 0, .75, 0) both, like-return .7s var(--like-spring) .32s forwards;
+}
+@keyframes like-vanish {
+  from {
+    scale: 1;
+    opacity: 1;
+  }
+  to {
+    scale: .15;
+    opacity: 0;
+  }
+}
+@keyframes like-return {
+  from {
+    scale: .15;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+/* unliking: a soft dip and back while the colour leaves, at rest at both ends */
+.like.is-unliking .like-icon {
+  animation: like-dip .34s cubic-bezier(.37, 0, .63, 1);
+}
+@keyframes like-dip {
+  0% {
+    scale: 1;
+  }
+  40% {
+    scale: .86;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+/* the ring: one long ease-out growth (to 110%), the tint, and a hole that opens before the growth ends */
+.like-ring {
+  position: absolute;
+  left: -23px;
+  top: -23px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--like-color);
+  scale: 0;
+  -webkit-mask: radial-gradient(circle closest-side, transparent var(--like-hole), #000 calc(var(--like-hole) + 2%));
+  mask: radial-gradient(circle closest-side, transparent var(--like-hole), #000 calc(var(--like-hole) + 2%));
+}
+.like.is-liking .like-ring {
+  animation: like-ring-grow .56s cubic-bezier(.22, 1, .36, 1) .06s both, like-ring-tint .3s ease-out .06s both, like-ring-open .36s cubic-bezier(.33, 1, .68, 1) .28s both;
+}
+@keyframes like-ring-grow {
+  from {
+    scale: 0;
+  }
+  to {
+    scale: 1.1;
+  }
+}
+@keyframes like-ring-tint {
+  from {
+    background-color: var(--like-color);
+  }
+  to {
+    background-color: var(--like-ring);
+  }
+}
+@keyframes like-ring-open {
+  from {
+    --like-hole: 0%;
+  }
+  to {
+    --like-hole: 100%;
+  }
+}
+
+/* the dots: 7 pairs around the ring. They fly out on a long ease-out, swell and shrink on their own clock,
+   and the whole spray turns 12° as it goes */
+.like-dots i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform: rotate(var(--a));
+}
+.like-dots b {
+  position: absolute;
+  left: -2.5px;
+  top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--d1);
+  scale: 0;
+}
+.like-dots b + b {
+  left: -1.75px;
+  top: -1.75px;
+  width: 3.5px;
+  height: 3.5px;
+  background: var(--d2);
+}
+.like-dots i:nth-child(1) { --a: 0deg; --d1: #F91880; --d2: #FF7AB6; }
+.like-dots i:nth-child(2) { --a: 51.43deg; --d1: #FFAD1F; --d2: #FFD166; }
+.like-dots i:nth-child(3) { --a: 102.86deg; --d1: #1D9BF0; --d2: #7CC6FE; }
+.like-dots i:nth-child(4) { --a: 154.29deg; --d1: #A78BFA; --d2: #C4B5FD; }
+.like-dots i:nth-child(5) { --a: 205.71deg; --d1: #00BA7C; --d2: #6EE7B7; }
+.like-dots i:nth-child(6) { --a: 257.14deg; --d1: #F97316; --d2: #FDBA74; }
+.like-dots i:nth-child(7) { --a: 308.57deg; --d1: #F91880; --d2: #CC8EF5; }
+.like.is-liking .like-dots i {
+  animation: like-swirl .9s cubic-bezier(.22, 1, .36, 1) .34s both;
+}
+.like.is-liking .like-dots b {
+  animation: like-fly .62s cubic-bezier(.16, 1, .3, 1) .34s both, like-dot .62s .34s both;
+}
+.like.is-liking .like-dots b + b {
+  animation-name: like-fly-2, like-dot;
+  animation-delay: .38s;
+}
+@keyframes like-swirl {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 12deg;
+  }
+}
+@keyframes like-fly {
+  from {
+    translate: 0 -20px;
+  }
+  to {
+    translate: 0 -33px;
+  }
+}
+@keyframes like-fly-2 {
+  from {
+    translate: 4.5px -18px;
+  }
+  to {
+    translate: 8px -29px;
+  }
+}
+@keyframes like-dot {
+  0% {
+    scale: 0;
+    animation-timing-function: cubic-bezier(.33, 1, .68, 1);
+  }
+  24% {
+    scale: 1;
+    animation-timing-function: cubic-bezier(.32, 0, .67, 0);
+  }
+  100% {
+    scale: 0;
+  }
+}
+
+/* the small hearts (like.js adds them): the rise is one unbroken ease-out, the sway a sine that rests at its turns,
+   and size and fade keep their own clocks */
+.like-float {
+  position: absolute;
+  left: 0;
+  top: -6px;
+  opacity: 0;
+  animation: like-rise var(--dur) cubic-bezier(.33, 1, .68, 1) var(--dl) both, like-fade var(--dur) var(--dl) both;
+}
+.like-float span {
+  display: block;
+  animation: like-sway var(--dur) cubic-bezier(.37, 0, .63, 1) var(--dl) both, like-grow var(--dur) var(--dl) both;
+}
+.like-float svg {
+  display: block;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  fill: var(--fc);
+}
+@keyframes like-rise {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 var(--dy);
+  }
+}
+@keyframes like-fade {
+  0% {
+    opacity: 0;
+    animation-timing-function: cubic-bezier(.33, 1, .68, 1);
+  }
+  14% {
+    opacity: 1;
+    animation-timing-function: linear;
+  }
+  50% {
+    opacity: 1;
+    animation-timing-function: cubic-bezier(.37, 0, .63, 1);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes like-sway {
+  0% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  33% {
+    translate: var(--dx) 0;
+    rotate: var(--r);
+  }
+  70% {
+    translate: calc(var(--dx) * -.6) 0;
+    rotate: calc(var(--r) * -.6);
+  }
+  100% {
+    translate: calc(var(--dx) * .25) 0;
+    rotate: 0deg;
+  }
+}
+@keyframes like-grow {
+  0% {
+    scale: .3;
+    animation-timing-function: cubic-bezier(.34, 1.56, .64, 1);
+  }
+  24% {
+    scale: 1;
+    animation-timing-function: cubic-bezier(.32, 0, .67, 0);
+  }
+  100% {
+    scale: .8;
+  }
+}
+
+/* less motion: only the colour changes */
+@media (prefers-reduced-motion: reduce) {
+  .like,
+  .like * {
+    animation: none !important;
+  }
+}

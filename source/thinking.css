@@ -1,0 +1,62 @@
+/* Thinking orbs · Sara Lobo Library
+   A ball of dots and the word beside it, for the wait while an answer is being written. thinking.js draws the ball
+   and, for the Sweep, carries the ball's wave on through the word. Made for dark backgrounds: on a light one, set
+   --thinking-ink (the dots and the light in the word) and --thinking-dim (the word at rest). */
+
+.thinking {
+  --thinking-size: 32px;
+  --thinking-ink: #EDEDED;
+  --thinking-dim: #8A8A8A;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  vertical-align: middle;
+}
+/* the ball: drawn by thinking.js at this size. Under 64px it uses more, finer dots, made to sit beside text */
+.thinking-orb {
+  display: block;
+  flex: none;
+  width: var(--thinking-size);
+  height: var(--thinking-size);
+}
+/* the word: a light passes through it, left to right, on a loop */
+.thinking-label {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: normal;
+  letter-spacing: -.005em;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image: linear-gradient(90deg, var(--thinking-dim) 0 35%, var(--thinking-ink) 50%, var(--thinking-dim) 65% 100%);
+  background-size: 250% 100%;
+  animation: thinking-shine 2.6s linear infinite;
+}
+@keyframes thinking-shine {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+/* the Sweep's word is lit by the ball's own wave: thinking.js moves --thinking-x across it */
+.thinking[data-kind="sweep"] .thinking-label {
+  --thinking-x: -999px;
+  background-image: linear-gradient(90deg, var(--thinking-dim) calc(var(--thinking-x) - 26px), var(--thinking-ink) var(--thinking-x), var(--thinking-dim) calc(var(--thinking-x) + 26px));
+  background-size: auto;
+  animation: none;
+}
+
+/* less motion: the ball holds still and only breathes; the word stays plain */
+@media (prefers-reduced-motion: reduce) {
+  .thinking-label {
+    animation: none;
+    background: none;
+    color: var(--thinking-dim);
+  }
+}
