@@ -1,0 +1,90 @@
+{
+  "name": "craft-library",
+  "version": "0.7.1",
+  "description": "Sara Lobo Library: a liquid glass nav bar, a bursting heart, a magnetic icon, an iridescent 3D card, a glass piggy bank, two thinking indicators (Magic sphere, Sweep), the Panorama hero, the Map pin address picker and the Token wheel onboarding, for React or plain HTML",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./elements": "./dist/elements.js",
+    "./craft.js": "./dist/craft.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "./dist/elements.js",
+    "./dist/craft.js"
+  ],
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "esbuild": "0.24.0",
+    "playwright-core": "^1.61.1"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "prepublishOnly": "node build.mjs"
+  },
+  "keywords": [
+    "react",
+    "web-components",
+    "liquid-glass",
+    "animation",
+    "micro-interaction",
+    "navbar",
+    "like-button",
+    "3d",
+    "three",
+    "credit-card",
+    "piggy-bank",
+    "congratulations",
+    "glass",
+    "thinking-indicator",
+    "loader",
+    "ai",
+    "particles",
+    "hero",
+    "webgl",
+    "video",
+    "film",
+    "landing-page",
+    "map",
+    "address",
+    "map-pin",
+    "onboarding",
+    "physics",
+    "gyroscope",
+    "coins",
+    "fintech",
+    "ui-components",
+    "react-components",
+    "animated-components",
+    "micro-interactions",
+    "threejs",
+    "ai-prompts",
+    "claude-code",
+    "cursor"
+  ],
+  "author": "Sara Lobo",
+  "license": "MIT",
+  "homepage": "https://saralobolibrary.com/?ref=npm",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saralobo/craft-library.git"
+  },
+  "bugs": {
+    "url": "https://github.com/saralobo/craft-library/issues"
+  },
+  "dependencies": {
+    "three": "0.169.0"
+  }
+}
