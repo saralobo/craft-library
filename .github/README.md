@@ -1,6 +1,6 @@
 # Sara Lobo Library
 
-Interface pieces by [Sara Lobo](https://www.saralobodesign.com/), designed, tested and polished one detail at a time: a liquid glass nav bar, a bursting heart, a magnetic icon, an iridescent 3D card, a glass piggy bank, two "thinking" indicators, the Magic sphere and the Sweep, the Panorama, a hero for moving pictures, the Map pin, an address picker, and the Token wheel, an onboarding screen. Each one is the exact piece from the library, with its own CSS and motion, for React 18+ or plain HTML. The only dependency is three.js, for five of the 3D pieces, and it loads only when one of them is on the page.
+Interface pieces by [Sara Lobo](https://www.saralobodesign.com/), designed, tested and polished one detail at a time: a liquid glass nav bar, a bursting heart, a magnetic icon, an iridescent 3D card, a glass piggy bank, two "thinking" indicators, the Magic sphere and the Sweep, the Panorama, a hero for moving pictures, the Map pin, an address picker, the Token wheel, an onboarding screen, and Liquid pay, a slide to pay in liquid chrome. Each one is the exact piece from the library, with its own CSS and motion, for React 18+ or plain HTML. The only dependency is three.js, for five of the 3D pieces, and it loads only when one of them is on the page.
 
 ```bash
 npm install craft-library
@@ -181,6 +181,29 @@ import { TokenWheel } from 'craft-library';
 
 It is WebGL (three.js 0.169, which comes with the package and loads the first time it mounts), so one per screen is best. The screen is true black; put it on a dark page.
 
+## Liquid pay
+
+Slide to pay, with a drop of liquid chrome for a handle. Dragged slowly it stretches and follows the finger, heavy and without bounce; dragged too fast it splits into droplets that run after it and merge back in through a thin bridge of metal. Let go early and it flows back to the start and settles with a small ripple. Tilt the phone and it runs to the low side of the track, like mercury, but a tilt never pays: only a drag to the end does. At the end the drop is pulled into the Pay button and fills it with chrome, and a light crosses it.
+
+```jsx
+import { LiquidPay } from 'craft-library';
+
+<LiquidPay onConfirm={() => pay()} />   // pay: your own handler
+```
+
+| Prop | | |
+|---|---|---|
+| `onConfirm` | `() => void` | Runs once, when a drag carries the drop to the end. |
+| `label` | `string` | The words on the track. Default `"Slide to pay"`. |
+| `cta` | `string` | The button's word. Default `"Pay"`. |
+| `width` | `number` | px. Default `320`; it is a fifth of that tall. |
+| `reset` | `any` | Change it (a counter, say) to bring the drop back for another payment. |
+| `gyroscope` | `boolean` | `false` never reads the phone's tilt. Default `true`. On iOS the first touch asks for the motion permission. |
+| `tilt` | `number` | `-1` to `1`, a fixed tilt for a page without a gyroscope; `null` hands back to the phone. |
+| `fonts` | `boolean` | `false` doesn't load DM Sans from Google Fonts. Default `true`. |
+
+It is WebGL with no dependencies: the drop is a field of metaballs drawn in one shader and moved by a small spring simulation (without WebGL it draws flat discs). The track is true black; put it on a dark page.
+
 ## Magic sphere and Sweep
 
 <a href="https://saralobolibrary.com/sphere?ref=github"><img src="https://saralobolibrary.com/og/sphere.jpg" width="296" alt="Magic sphere, Sara Lobo Library"></a> <a href="https://saralobolibrary.com/sweep?ref=github"><img src="https://saralobolibrary.com/og/sweep.jpg" width="296" alt="Sweep, Sara Lobo Library"></a>
@@ -233,7 +256,7 @@ It is WebGL with no dependencies, so one per screen is best. Your clip and pictu
 
 ## Plain HTML
 
-One script registers ten tags. Same pieces, same props as attributes.
+One script registers eleven tags. Same pieces, same props as attributes.
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
@@ -248,12 +271,13 @@ One script registers ten tags. Same pieces, same props as attributes.
 <panorama-reel heading="Lorem ipsum"></panorama-reel>  <!-- text, text-italic; video and stills as JSON; el.replay(); 100% wide, 640px tall unless you size it -->
 <map-pin></map-pin>                       <!-- "pinchange" and "pinconfirm" events: e.detail { address, neighbourhood, place }; label-title, label-confirm, label-confirmed; el.replay(); 100% wide, 560px tall unless you size it -->
 <token-wheel></token-wheel>               <!-- "tokenscontinue" event; label-eyebrow, label-title, label-cta, initials; frame="false", controls="false", turned; el.turn(true|false), el.replay(); 100% wide, 900px tall unless you size it -->
+<liquid-pay></liquid-pay>                 <!-- "liquidconfirm" event; label, cta, width="320", tilt, gyroscope="false"; el.reset(), el.tilt(v) -->
 ```
 
 With a bundler and no React: `import 'craft-library/elements'`.
 
 ## Motion and access
 
-Every item is a real `<button>` with an accessible name; the nav marks the chosen one with `aria-current` and moves with the arrow keys. The card is a `role="button"` that Enter, Space and the arrow keys turn over; the piggy bank and the map pin's map are labelled images; the pin's address is announced as it changes and Confirm is a real button. With `prefers-reduced-motion`, the heart only changes colour, the nav only slides, the magnet stays still, the card swaps faces with a fade, with no entrance and no breathing, the piggy bank stays in place while the coins appear inside it and its eyes close, the thinking balls hold still and only breathe, the panorama skips its opening and starts settled, the map pin appears in place without its flight, and the token wheel starts formed and still. The token wheel's wheel is a `role="button"` that Enter and Space replay, its title is a heading and its round buttons are real buttons with names. The panorama's title is a heading; its screens and cursor are decorative.
+Every item is a real `<button>` with an accessible name; the nav marks the chosen one with `aria-current` and moves with the arrow keys. The card is a `role="button"` that Enter, Space and the arrow keys turn over; the piggy bank and the map pin's map are labelled images; the pin's address is announced as it changes and Confirm is a real button. With `prefers-reduced-motion`, the heart only changes colour, the nav only slides, the magnet stays still, the card swaps faces with a fade, with no entrance and no breathing, the piggy bank stays in place while the coins appear inside it and its eyes close, the thinking balls hold still and only breathe, the panorama skips its opening and starts settled, the map pin appears in place without its flight, the token wheel starts formed and still, and Liquid pay neither stretches nor splits and confirms with a fade. The token wheel's wheel is a `role="button"` that Enter and Space replay, its title is a heading and its round buttons are real buttons with names. Liquid pay's track is a `role="slider"` with its value: the arrow keys move the drop and Enter pays, and its Pay button pays from the keyboard or a screen reader. The panorama's title is a heading; its screens and cursor are decorative.
 
 MIT · [Sara Lobo Library](https://saralobolibrary.com)

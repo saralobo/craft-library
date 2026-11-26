@@ -10,6 +10,7 @@ import { mountThinking } from './thinking.js';
 import { mountPanoramaReel } from './panorama-mount.js';
 import { mountMapPin } from './pin-mount.js';
 import { mountTokenWheel } from './tokens-mount.js';
+import { mountLiquidPay } from './liquid-mount.js';
 
 const HOST = { display: 'inline-block', lineHeight: 0, verticalAlign: 'middle' };
 
@@ -136,4 +137,20 @@ export function TokenWheel({ height = 900, labels, frame, controls, autoplay, fo
   return createElement('div', { ref: host, className, style: { position: 'relative', width: '100%', height, ...style } });
 }
 
-export { mountLike, mountMagnet, mountGlassNav, mountIridescentCard, mountPiggyBank, mountThinking, mountPanoramaReel, mountMapPin, mountTokenWheel };
+// Liquid pay: slide to pay, with a drop of liquid chrome for a handle. It sizes itself (`width` px wide, 320 by default,
+// and a fifth of that tall). onConfirm runs once, when a drag carries the drop to the end; tilting the phone moves the
+// drop but never pays. reset: change it (a counter) to bring the drop back for another payment. tilt: -1 to 1, a fixed
+// tilt for a page without a gyroscope (null hands back to the phone).
+export function LiquidPay({ label, cta, width, gyroscope, fonts, tilt, reset, onConfirm, className, style }) {
+  const host = useRef(null), pay = useRef(null), last = useRef(reset), confirm = useLatest(onConfirm);
+  useEffect(() => {
+    const m = pay.current = mountLiquidPay(host.current, { label, cta, width, gyroscope, fonts, tilt, onConfirm: () => confirm.current && confirm.current() });
+    return () => { m.destroy(); pay.current = null; };
+  }, [label, cta, gyroscope, fonts]);
+  useEffect(() => { if (pay.current) pay.current.width(width); }, [width]);
+  useEffect(() => { if (pay.current) pay.current.tilt(tilt); }, [tilt]);
+  useEffect(() => { if (last.current === reset) return; last.current = reset; if (pay.current) pay.current.reset(); }, [reset]);
+  return createElement('span', { ref: host, className, style: { ...HOST, ...style } });
+}
+
+export { mountLike, mountMagnet, mountGlassNav, mountIridescentCard, mountPiggyBank, mountThinking, mountPanoramaReel, mountMapPin, mountTokenWheel, mountLiquidPay };

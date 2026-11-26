@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Liquid pay · Sara Lobo Library</title>
+<!-- A 9:16 stage for recording the Liquid pay. Serve the repository (npx serve .) and open /demo/liquid.html.
+     On a phone the tilt comes from the gyroscope (iOS asks on the first touch). On a computer, hold the T key and move
+     the mouse left and right to tilt, or press 1, 0 and 2 for tilt left, level and tilt right. R brings the drop back. -->
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; font-family: "DM Sans", -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  .stage { position: relative; height: 100svh; aspect-ratio: 9 / 16; max-width: 100vw; background: radial-gradient(120% 70% at 50% 42%, #0d0d0e 0%, #000 70%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4.5svh; }
+  .amount { color: #f2f2f2; text-align: center; letter-spacing: -.02em; }
+  .amount small { display: block; color: rgba(255,255,255,.42); font-size: 1.6svh; letter-spacing: .02em; margin-bottom: 1svh; }
+  .amount b { font-weight: 500; font-size: 6.4svh; }
+  .amount span { display: block; color: rgba(255,255,255,.36); font-size: 1.5svh; margin-top: 1.2svh; transition: color .4s; }
+  .stage.is-paid .amount span { color: rgba(255,255,255,.78); }
+  .hint { position: absolute; bottom: 3svh; left: 0; right: 0; text-align: center; color: rgba(255,255,255,.22); font-size: 1.2svh; }
+  @media (hover: none) { .hint { display: none; } }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="amount"><small>Sara Lobo Library</small><b>$ 248.00</b><span id="status">Confirm the payment</span></div>
+  <div id="pay"></div>
+  <div class="hint">hold T and move the mouse to tilt · 1 0 2 · R to reset</div>
+</div>
+<script type="module">
+  import { mountLiquid } from '../source/liquid.js';
+  const stage = document.getElementById('stage'), status = document.getElementById('status');
+  const host = document.getElementById('pay');
+  const size = () => Math.round(Math.min(stage.clientWidth * 0.82, 420));
+  const pay = mountLiquid(host, { width: size() });
+  window.liquid = pay;
+  addEventListener('resize', () => pay.width(size()));
+  host.addEventListener('liquidconfirm', () => { stage.classList.add('is-paid'); setTimeout(() => { status.textContent = 'Paid'; }, 400); });
+  const reset = () => { pay.reset(); stage.classList.remove('is-paid'); status.textContent = 'Confirm the payment'; };
+  let holdT = false;
+  addEventListener('keydown', (e) => {
+    if (e.target.closest && e.target.closest('.lq')) return;
+    if (e.key === 't' || e.key === 'T') holdT = true;
+    if (e.key === '1') pay.tilt(-0.6); if (e.key === '2') pay.tilt(0.6); if (e.key === '0') pay.tilt(0);
+    if (e.key === 'r' || e.key === 'R') reset();
+  });
+  addEventListener('keyup', (e) => { if (e.key === 't' || e.key === 'T') { holdT = false; pay.tilt(0); } });
+  addEventListener('mousemove', (e) => { if (holdT) pay.tilt((e.clientX / innerWidth) * 2 - 1); });
+</script>
+</body>
+</html>

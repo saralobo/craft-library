@@ -1,4 +1,4 @@
-// <glass-nav>, <like-button>, <magnetic-icon>, <iridescent-card>, <piggy-bank>, <magic-sphere>, <sweep-sphere>, <panorama-reel>, <map-pin> and <token-wheel>: the
+// <glass-nav>, <like-button>, <magnetic-icon>, <iridescent-card>, <piggy-bank>, <magic-sphere>, <sweep-sphere>, <panorama-reel>, <map-pin>, <token-wheel> and <liquid-pay>: the
 // pieces as HTML tags, for pages without React. They render into the page itself (no shadow root), so the glass can
 // blend with what is behind it.
 import { mountLike } from './like.js';
@@ -10,6 +10,7 @@ import { mountThinking } from './thinking.js';
 import { mountPanoramaReel } from './panorama-mount.js';
 import { mountMapPin } from './pin-mount.js';
 import { mountTokenWheel } from './tokens-mount.js';
+import { mountLiquidPay } from './liquid-mount.js';
 import { css } from './style.js';
 
 function define(name, mount, options) {
@@ -134,4 +135,20 @@ define('token-wheel', (el, o) => {
   turned: el.hasAttribute('turned') && el.getAttribute('turned') !== 'false'
 }));
 
-export { mountLike, mountMagnet, mountGlassNav, mountIridescentCard, mountPiggyBank, mountThinking, mountPanoramaReel, mountMapPin, mountTokenWheel };
+// liquid pay: inline, it sizes itself (width="320" px by default, a fifth of that tall). A drag to the end fires
+// "liquidconfirm" once. The words: label and cta. gyroscope="false" ignores the phone's tilt; tilt="0.4" fixes one for a
+// page without a gyroscope. el.reset() brings the drop back; el.tilt(v) changes the tilt from code.
+define('liquid-pay', (el, o) => {
+  css('craft-liquid-host', 'liquid-pay{display:inline-block;line-height:0;vertical-align:middle}');
+  const m = mountLiquidPay(el, o);
+  el.reset = m.reset; el.tilt = m.tilt; el.gyroscope = m.gyroscope;
+  return m;
+}, (el) => ({
+  label: el.getAttribute('label') || undefined,
+  cta: el.getAttribute('cta') || undefined,
+  width: el.getAttribute('width') ? +el.getAttribute('width') : undefined,
+  tilt: el.getAttribute('tilt') ? +el.getAttribute('tilt') : undefined,
+  gyroscope: off(el, 'gyroscope'), fonts: off(el, 'fonts')
+}));
+
+export { mountLike, mountMagnet, mountGlassNav, mountIridescentCard, mountPiggyBank, mountThinking, mountPanoramaReel, mountMapPin, mountTokenWheel, mountLiquidPay };

@@ -154,12 +154,16 @@ export function mountThinking(host, o = {}) {
 // unchanged. Its clip and pictures ship in dist/panorama/; for bundlers the mount reads them from jsDelivr at this exact
 // version (a bundler doesn't serve files out of node_modules), in craft.js from next to itself.
 out('panorama.js', read('panorama.js'));
+
 const VERSION = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')).version;
 out('panorama-assets.js', `// where the Panorama's own clip and pictures are: jsDelivr, at this version of the package\nexport const ASSETS = 'https://cdn.jsdelivr.net/npm/craft-library@${VERSION}/dist/panorama/';\n`);
 cpSync(new URL('./source/panorama/', import.meta.url), new URL('./dist/panorama/', import.meta.url), { recursive: true });
 
+// ---- liquid pay: a WebGL control. The library's liquid.js is an ES module with no dependencies, so it goes in unchanged
+out('liquid.js', read('liquid.js'));
+
 // ---- the hand-written parts, then the one-file build for a <script> tag
-for (const f of ['style.js', 'index.js', 'elements.js', 'cdn.js', 'card-mount.js', 'card-load.js', 'piggy-mount.js', 'piggy-load.js', 'panorama-mount.js', 'pin-mount.js', 'pin-load.js', 'tokens-mount.js', 'tokens-load.js']) copyFileSync(new URL('./src/' + f, import.meta.url), new URL('./dist/' + f, import.meta.url));
+for (const f of ['style.js', 'index.js', 'elements.js', 'cdn.js', 'card-mount.js', 'card-load.js', 'piggy-mount.js', 'piggy-load.js', 'panorama-mount.js', 'pin-mount.js', 'pin-load.js', 'tokens-mount.js', 'tokens-load.js', 'liquid-mount.js']) copyFileSync(new URL('./src/' + f, import.meta.url), new URL('./dist/' + f, import.meta.url));
 // in craft.js the card, the piggy bank, the map pin and the token wheel come from card.cdn.js, piggy.cdn.js, pin.cdn.js and
 // tokens.cdn.js next to it, so three.js never lands in the one file
 const cardFromCdn = { name: 'card-from-cdn', setup(b) {
@@ -170,7 +174,7 @@ const cardFromCdn = { name: 'card-from-cdn', setup(b) {
   b.onResolve({ filter: /\/panorama-assets\.js$/ }, () => ({ path: fileURLToPath(new URL('./src/panorama-assets-cdn.js', import.meta.url)) }));
 } };
 await build({ entryPoints: [fileURLToPath(new URL('./dist/cdn.js', import.meta.url))], bundle: true, format: 'iife', target: 'es2020', outfile: fileURLToPath(new URL('./dist/craft.js', import.meta.url)), legalComments: 'none', plugins: [cardFromCdn], logLevel: 'error',
-  banner: { js: '/* Sara Lobo Library · liquid glass nav bar, bursting heart, magnetic icon, iridescent card, glass piggy bank, magic sphere, sweep, panorama, map pin, token wheel · <glass-nav>, <like-button>, <magnetic-icon>, <iridescent-card>, <piggy-bank>, <magic-sphere>, <sweep-sphere>, <panorama-reel>, <map-pin>, <token-wheel> */' } });
+  banner: { js: '/* Sara Lobo Library · liquid glass nav bar, bursting heart, magnetic icon, iridescent card, glass piggy bank, magic sphere, sweep, panorama, map pin, token wheel, liquid pay · <glass-nav>, <like-button>, <magnetic-icon>, <iridescent-card>, <piggy-bank>, <magic-sphere>, <sweep-sphere>, <panorama-reel>, <map-pin>, <token-wheel>, <liquid-pay> */' } });
 console.log('built dist/');
 
 // ---- the README the GitHub repository shows (GitHub reads .github/README.md before README.md): the same text, its links

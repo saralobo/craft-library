@@ -1,7 +1,7 @@
 {
   "name": "craft-library",
   "version": "0.7.1",
-  "description": "Sara Lobo Library: a liquid glass nav bar, a bursting heart, a magnetic icon, an iridescent 3D card, a glass piggy bank, two thinking indicators (Magic sphere, Sweep), the Panorama hero, the Map pin address picker and the Token wheel onboarding, for React or plain HTML",
+  "description": "Sara Lobo Library: a liquid glass nav bar, a bursting heart, a magnetic icon, an iridescent 3D card, a glass piggy bank, two thinking indicators (Magic sphere, Sweep), the Panorama hero, the Map pin address picker, the Token wheel onboarding and the Liquid pay slider, for React or plain HTML",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -72,7 +72,10 @@
     "threejs",
     "ai-prompts",
     "claude-code",
-    "cursor"
+    "cursor",
+    "slide-to-pay",
+    "metaballs",
+    "liquid-metal"
   ],
   "author": "Sara Lobo",
   "license": "MIT",

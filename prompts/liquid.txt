@@ -1,0 +1,26 @@
+Add the Liquid pay from Sara Lobo Library to my app.
+
+Install:
+npm install craft-library
+
+Usage (React 18+):
+import { LiquidPay } from 'craft-library';
+
+<LiquidPay onConfirm={() => pay()} />   // pay: your own handler
+
+Plain HTML (no build step):
+<script src="https://cdn.jsdelivr.net/npm/craft-library@0/dist/craft.js"></script>
+<liquid-pay></liquid-pay>
+<!-- a drag to the end fires a "liquidconfirm" event on the tag (listen for it to make the payment); document.querySelector("liquid-pay").reset() brings the drop back -->
+
+Props:
+- onConfirm: runs once, when a drag carries the drop to the end (in HTML, the "liquidconfirm" event)
+- label: the words on the track (default "Slide to pay")
+- cta: the button's word (default "Pay")
+- width: px (default 320); it is a fifth of that tall
+- reset: change it (a counter) to bring the drop back for another payment (in HTML, .reset())
+- gyroscope: false ignores the phone's tilt (in HTML, gyroscope="false")
+- tilt: -1 to 1, a fixed tilt for a page without a gyroscope (in HTML, tilt="0.4" or .tilt(0.4))
+
+A slide-to-pay control whose handle is a drop of liquid chrome (WebGL, no dependencies). Slow, it stretches and follows the finger; too fast, it splits into droplets that run back and merge into it; tilt the phone and it runs to the low side, but a tilt never pays, only a drag does; at the end it fills the Pay button with chrome. On iOS the first touch asks for the motion permission. Arrow keys move it and Enter pays; with reduced motion it doesn't stretch or split. Use it as it is, without restyling it or rebuilding the animation, on a dark background (black is best).
+Docs: https://www.npmjs.com/package/craft-library
