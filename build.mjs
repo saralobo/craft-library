@@ -1,6 +1,6 @@
 // Builds dist/ from the library's own files in source/ (copied from the site as they are). The pieces' CSS and engines
 // go in unchanged; only the wrapping around them is written here. Run: npm run build
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, cpSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, cpSync, readdirSync } from 'node:fs';
 import { build } from 'esbuild';
 import { fileURLToPath } from 'node:url';
 
@@ -159,7 +159,7 @@ out('panorama-assets.js', `// where the Panorama's own clip and pictures are: js
 cpSync(new URL('./source/panorama/', import.meta.url), new URL('./dist/panorama/', import.meta.url), { recursive: true });
 
 // ---- the hand-written parts, then the one-file build for a <script> tag
-for (const f of ['style.js', 'index.js', 'elements.js', 'cdn.js', 'card-mount.js', 'card-load.js', 'piggy-mount.js', 'piggy-load.js', 'panorama-mount.js', 'pin-mount.js', 'pin-load.js', 'tokens-mount.js', 'tokens-load.js']) copyFileSync(new URL('./src/' + f, import.meta.url), new URL('./dist/' + f, import.meta.url));
+for (const f of ['style.js', 'sign.js', 'index.js', 'elements.js', 'cdn.js', 'card-mount.js', 'card-load.js', 'piggy-mount.js', 'piggy-load.js', 'panorama-mount.js', 'pin-mount.js', 'pin-load.js', 'tokens-mount.js', 'tokens-load.js']) copyFileSync(new URL('./src/' + f, import.meta.url), new URL('./dist/' + f, import.meta.url));
 // in craft.js the card, the piggy bank, the map pin and the token wheel come from card.cdn.js, piggy.cdn.js, pin.cdn.js and
 // tokens.cdn.js next to it, so three.js never lands in the one file
 const cardFromCdn = { name: 'card-from-cdn', setup(b) {
@@ -170,7 +170,13 @@ const cardFromCdn = { name: 'card-from-cdn', setup(b) {
   b.onResolve({ filter: /\/panorama-assets\.js$/ }, () => ({ path: fileURLToPath(new URL('./src/panorama-assets-cdn.js', import.meta.url)) }));
 } };
 await build({ entryPoints: [fileURLToPath(new URL('./dist/cdn.js', import.meta.url))], bundle: true, format: 'iife', target: 'es2020', outfile: fileURLToPath(new URL('./dist/craft.js', import.meta.url)), legalComments: 'none', plugins: [cardFromCdn], logLevel: 'error',
-  banner: { js: '/* Sara Lobo Library · liquid glass nav bar, bursting heart, magnetic icon, iridescent card, glass piggy bank, magic sphere, sweep, panorama, map pin, token wheel · <glass-nav>, <like-button>, <magnetic-icon>, <iridescent-card>, <piggy-bank>, <magic-sphere>, <sweep-sphere>, <panorama-reel>, <map-pin>, <token-wheel> */' } });
+  banner: { js: '/*! Sara Lobo Library · liquid glass nav bar, bursting heart, magnetic icon, iridescent card, glass piggy bank, magic sphere, sweep, panorama, map pin, token wheel · <glass-nav>, <like-button>, <magnetic-icon>, <iridescent-card>, <piggy-bank>, <magic-sphere>, <sweep-sphere>, <panorama-reel>, <map-pin>, <token-wheel> · https://saralobolibrary.com · MIT */' } });
+// every file in dist/ starts with who made it, as a /*! comment: the kind minifiers and bundlers keep
+for (const f of readdirSync(new URL('./dist/', import.meta.url))) {
+  if (!f.endsWith('.js')) continue;
+  const u = new URL('./dist/' + f, import.meta.url), s = readFileSync(u, 'utf8');
+  if (!s.startsWith('/*!')) writeFileSync(u, `/*! Sara Lobo Library · craft-library ${VERSION} · interface pieces by Sara Lobo · https://saralobolibrary.com · MIT */\n` + s);
+}
 console.log('built dist/');
 
 // ---- the README the GitHub repository shows (GitHub reads .github/README.md before README.md): the same text, its links
