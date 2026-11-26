@@ -11,6 +11,9 @@ import { mountPanoramaReel } from './panorama-mount.js';
 import { mountMapPin } from './pin-mount.js';
 import { mountTokenWheel } from './tokens-mount.js';
 import { css } from './style.js';
+import { sign } from './sign.js';
+
+sign();
 
 function define(name, mount, options) {
   if (typeof customElements === 'undefined' || customElements.get(name)) return;

@@ -10,6 +10,9 @@ import { mountThinking } from './thinking.js';
 import { mountPanoramaReel } from './panorama-mount.js';
 import { mountMapPin } from './pin-mount.js';
 import { mountTokenWheel } from './tokens-mount.js';
+import { sign } from './sign.js';
+
+sign();
 
 const HOST = { display: 'inline-block', lineHeight: 0, verticalAlign: 'middle' };
 
