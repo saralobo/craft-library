@@ -257,3 +257,17 @@ With a bundler and no React: `import 'craft-library/elements'`.
 Every item is a real `<button>` with an accessible name; the nav marks the chosen one with `aria-current` and moves with the arrow keys. The card is a `role="button"` that Enter, Space and the arrow keys turn over; the piggy bank and the map pin's map are labelled images; the pin's address is announced as it changes and Confirm is a real button. With `prefers-reduced-motion`, the heart only changes colour, the nav only slides, the magnet stays still, the card swaps faces with a fade, with no entrance and no breathing, the piggy bank stays in place while the coins appear inside it and its eyes close, the thinking balls hold still and only breathe, the panorama skips its opening and starts settled, the map pin appears in place without its flight, and the token wheel starts formed and still. The token wheel's wheel is a `role="button"` that Enter and Space replay, its title is a heading and its round buttons are real buttons with names. The panorama's title is a heading; its screens and cursor are decorative.
 
 MIT · [Sara Lobo Library](https://saralobolibrary.com)
+
+## Credit
+
+The pieces are free and MIT-licensed. If you use one, a credit is welcome, never required:
+
+- every file keeps a one-line `/*!` comment saying where it comes from (minifiers keep that kind);
+- in the browser console, the package says once, quietly, where the pieces come from. To skip it, set `window.CRAFT_LIBRARY_QUIET = true` right after importing the package;
+- to show it in your README or on your site, paste this badge:
+
+```md
+[![Made with Sara Lobo Library](https://img.shields.io/badge/made_with-Sara_Lobo_Library-111214?style=flat-square)](https://saralobolibrary.com/?ref=badge)
+```
+
+[![Made with Sara Lobo Library](https://img.shields.io/badge/made_with-Sara_Lobo_Library-111214?style=flat-square)](https://saralobolibrary.com/?ref=github)
