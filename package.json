@@ -1,6 +1,6 @@
 {
   "name": "craft-library",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Sara Lobo Library: a liquid glass nav bar, a bursting heart, a magnetic icon, an iridescent 3D card, a glass piggy bank, two thinking indicators (Magic sphere, Sweep), the Panorama hero, the Map pin address picker and the Token wheel onboarding, for React or plain HTML",
   "type": "module",
   "main": "./dist/index.js",
@@ -83,6 +83,10 @@
   },
   "bugs": {
     "url": "https://github.com/saralobo/craft-library/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/saralobo"
   },
   "dependencies": {
     "three": "0.169.0"
